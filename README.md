@@ -1,9 +1,40 @@
-# UB Hacking Fall 2022 Rules 
-- Teams can consist of between 1 and 4 people.
-- To have your submission be considered for judging, you must submit a 2-5 minute video along with your project. Try to keep it as concise as possible!
-- The projects submitted for judging cannot have been started prior to the start of the hackathon. In other words, teams can plan their projects in great detail, but they cannot begin writing code until they arrive at the hackathon.
-- Additionally, we are partnering with MLH this year, which means that our hackers must follow their code of conduct which can be found here.
-- Any and all resources used must be open source and specified in either the project, or the project description.
-- Your project must be publically available and under source control (organizers need to be able to view your code repository) -  you can use GitHub, GitLab, Bitbucket, or any other code hosting service
-- Projects can not have been submitted to another event, including other hackathons this weekend.
-- [Code of Conduct](https://drive.google.com/file/d/1RH_TtRu6EOHSbOoiSj2h1Q4jswtVILzE/view)
+# Backward in Time
+
+UB Hacking Fall 2022 - web app implementation of [xkcd 1017](https://xkcd.com/1017/)
+
+## Credits
+
+### Creation
+
+Alex McHugh [@WeirdAlex03](https://github.com/WeirdAlex03)
+
+Naiyyir Hossain [@naiyyirh](https://github.com/naiyyirh)
+
+Ryan Heffernan [@Ryheff24](https://github.com/Ryheff24)
+
+Anthony Szykowny [@ahszykow](https://github.com/ashzyknow)
+
+### Inspiration
+
+Original comic
+
+> xkcd 1017 - Backward in Time
+>
+> (c) 2012 Randall Munroe, Licensed under CC BY-NC 2.5
+>
+> <https://xkcd.com/1017>
+
+
+Python implementation, introduced Alex to comic
+
+> Extreme Sport
+>
+> (c) 2022 Murray Jones, Licensed under GPL-3.0
+>
+> <https://www.reddit.com/r/xkcd/comments/y3j0p8/i_made_a_python_implementation_of_1017/>
+>
+> <https://github.com/Mblizzard/Extreme-Sport>
+>
+> *Note: The Python source code was not referenced in the making of this implementation. Only the post itself, which inspired the idea.*
+
+### Resources
