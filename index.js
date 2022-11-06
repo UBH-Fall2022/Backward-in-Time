@@ -99,10 +99,28 @@ function calcPercent(start, end, now = new Date().toISOString()) {
 function submit() {
     let start = document.getElementById("start-time").value;
     let end = document.getElementById("end-time").value;
-    let now = document.getElementById("now-time").value;
 
+    let timeline = document.getElementById("timeline");
+    timeline.style.display = "block";
+
+    setInterval(() => loop(start, end), 100);
+}
+
+function loop(start, end) {
+    let now = new Date().toISOString();
     let percent = calcPercent(start, end, now);
-    let historicDate = percToDate(percent, start);
+    let resultDate = percToDate(percent, start);
 
-    document.getElementById("output").innerHTML = `The date is ${fullDate(historicDate)}`;
+    let prog = document.getElementById("progress");
+    prog.innerText = `${percent.toFixed(5)*100}% completed`;
+
+    let bar = document.getElementById("bar");
+    bar.style.width = `${percent*100}%`;
+
+    let date = document.getElementById("date");
+    date.innerText = fullDate(resultDate);
+
+    let fact = document.getElementById("fact");
+    fact.innerText = factForDate(resultDate);
+    
 }
