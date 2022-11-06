@@ -93,38 +93,36 @@ function calcPercent(start, end, now = new Date().toISOString()) {
     return (nowMs - startMs) / (endMs - startMs);
 }
 
-let loopInterval = null;
-
 /**
  * Submit function for when you press the button
  */
 function submit() {
-    if (loopInterval) clearInterval(loopInterval);
-
+    
     let start = document.getElementById("start-time").value;
     let end = document.getElementById("end-time").value;
-
+    
     let timeline = document.getElementById("timeline");
     timeline.style.display = "block";
-
-    setInterval(() => loop(start, end), 100);
+    
+    if (timeline.loop) clearInterval(timeline.loop);
+    timeline.loop = setInterval(() => loop(start, end), 100);
 }
 
 function loop(start, end) {
     let now = new Date().toISOString();
     let percent = calcPercent(start, end, now);
-    let resultDate = percToDate(percent, start);
+    let resultDate = percToDate(percent, getDate(start));
 
     let prog = document.getElementById("progress");
     prog.innerText = `${percent.toFixed(5)*100}% completed`;
 
-    let bar = document.getElementById("bar");
+    let bar = document.getElementById("progress-bar");
     bar.style.width = `${percent*100}%`;
 
     let date = document.getElementById("date");
-    date.innerText = fullDate(resultDate);
+    date.innerText = resultDate+"\n"+fullDate(resultDate);
 
     let fact = document.getElementById("fact");
     fact.innerText = factForDate(resultDate);
-    
+
 }
