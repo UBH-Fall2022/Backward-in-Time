@@ -97,7 +97,6 @@ function calcPercent(start, end, now = new Date().toISOString()) {
  * Submit function for when you press the button
  */
 function submit() {
-    
     let start = document.getElementById("start-time").value;
     let end = document.getElementById("end-time").value;
     
@@ -111,7 +110,7 @@ function submit() {
 function loop(start, end) {
     let now = new Date().toISOString();
     let percent = calcPercent(start, end, now);
-    let resultDate = percToDate(percent, getDate(start));
+    let resultDate = percToDate(percent, getDate(new Date(start)));
 
     let prog = document.getElementById("progress");
     prog.innerText = `${percent.toFixed(5)*100}% completed`;
@@ -120,7 +119,7 @@ function loop(start, end) {
     bar.style.width = `${percent*100}%`;
 
     let date = document.getElementById("date");
-    date.innerText = resultDate+"\n"+fullDate(resultDate);
+    date.innerText = fullDate(resultDate);
 
     let fact = document.getElementById("fact");
     fact.innerText = factForDate(resultDate);
