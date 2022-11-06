@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Backward in Time</title>
+	<script src="../js/index.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/index.css">
+</head>
+
+<body>
+	<h1>Backward in Time</h1>
+	<div id="inputs">
+		<input type="datetime-local" id="start-time" placeholder="Start time"/>
+		<input type="datetime-local" id="end-time" placeholder="End time"/>
+		
+		<button id="submit" onclick="submit()">Submit</button>
+		<script type="text/javascript" src="../src/index.js"></script>
+	</div>
+	<br><br>
+	<div id="timeline" style="display: none;">
+		<div id="progress">10% completed</div>
+
+		<div id="progress-bar" style="background-color:gray; height: 5em; width: 90vw;">
+			<div id="progress-bar-inner" style="background-color:greenyellow; height: 100%; width: 10%;"></div>
+		</div>
+	
+		<div id="date">11/05/2022</div>
+		<div id="fact">UB Hacking Fall 2022 takes place</div>
+	
+	</div>
+</body>
+
+</html>

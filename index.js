@@ -19,7 +19,7 @@ function percToDate(percent, time){
 }
 
 function factForDate(year){
-    var csv = data.FileReader("data.csv")
+    var csv = data.FileReader("events.csv")
     var lowestyear = 0
     var difference = 99999999999
     for (var i of csv){
@@ -74,6 +74,35 @@ function fullDate(year){
         return `${Math.abs(Math.ceil(currentYear-year)/1000000000)} billion years ago`
 }
 
-let tests = [ 2022, 2000, 1901, 1900, 1899, 1001, 1000, 999, 1, 0, -1, -999, -1000, -1001, -9999, -10000, -10001, -999999, -1000000, -1000001, -999999999, -1000000000, -1000000001 ];
-for (test of tests)
-    console.log(`${test} -> ${fullDate(test)}`);
+/**
+ * Calculate the percentage given start and end dates
+ * 
+ * @param {string} start The start date/time as a an ISO string (i.e. '2022-11-05T14:42')
+ * @param {string} end   The end date/time as a an ISO string (i.e. '2022-11-05T14:42')
+ * @param {string} [now = [current time]] The current date/time as a an ISO string (i.e. '2022-11-05T14:42')
+ * @returns The percentage of the way through the time period as a decimal (i.e. 0.5)
+ */
+function calcPercent(start, end, now = new Date().toISOString()) {
+    let startMs = Date.parse(start);
+    let endMs = Date.parse(end);
+    let nowMs = Date.parse(now);
+
+    if (nowMs < startMs) return 0;
+    if (nowMs > endMs) return 1;
+
+    return (nowMs - startMs) / (endMs - startMs);
+}
+
+/**
+ * Submit function for when you press the button
+ */
+function submit() {
+    let start = document.getElementById("start-time").value;
+    let end = document.getElementById("end-time").value;
+    let now = document.getElementById("now-time").value;
+
+    let percent = calcPercent(start, end, now);
+    let historicDate = percToDate(percent, start);
+
+    document.getElementById("output").innerHTML = `The date is ${fullDate(historicDate)}`;
+}
