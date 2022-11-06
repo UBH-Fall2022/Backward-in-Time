@@ -93,10 +93,14 @@ function calcPercent(start, end, now = new Date().toISOString()) {
     return (nowMs - startMs) / (endMs - startMs);
 }
 
+let loopInterval = null;
+
 /**
  * Submit function for when you press the button
  */
 function submit() {
+    if (loopInterval) clearInterval(loopInterval);
+
     let start = document.getElementById("start-time").value;
     let end = document.getElementById("end-time").value;
 
