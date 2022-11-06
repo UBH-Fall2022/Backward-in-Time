@@ -8,30 +8,33 @@
 </head>
 
 <body>
-	<h1 id="title">Backward in Time</h1>
-	<div id="inputs">
-		<div id="start">
-			<label for="start-date">Start Date</label>
-			<input type="datetime-local" id="start-time" placeholder="Start time"/>
+	<div id="box">
+		<h1 id="title">Backward in Time</h1>
+		<div id="inputs">
+			<div id="start">
+				<label for="start-date">Start Date</label>
+				<input type="datetime-local" id="start-time" placeholder="Start time"/>
+			</div>
+			<div id="end">
+				<label for="end-date">End Date</label>
+				<input type="datetime-local" id="end-time" placeholder="End time"/>
+			</div>
+			
+			<button id="submit" onclick="submit()">Start</button>
 		</div>
-		<div id="end">
-			<label for="end-date">End Date</label>
-			<input type="datetime-local" id="end-time" placeholder="End time"/>
-		</div>
+		<div id="timeline">
+			<div id="progress">0% completed</div>
+	
+			<div id="progress-bar" style="background-color:gray; height: 3em; width: 26vw;border-radius: 3px;margin: auto; display: block;">
+				<div id="progress-bar-inner" style="background-color:greenyellow; height: 100%; width: 10%;"></div>
+			</div>
 		
-		<button id="submit" onclick="submit()">Start</button>
-	</div>
-	<div id="timeline">
-		<div id="progress">0% completed</div>
-
-		<div id="progress-bar" style="background-color:gray; height: 2em; width: 15vw;border-radius: 3px;margin: auto; display: block;">
-			<div id="progress-bar-inner" style="background-color:greenyellow; height: 100%; width: 10%;"></div>
+			<div id="date">11/05/2022</div>
+			<div id="fact">UB Hacking Fall 2022 takes place</div>
+		
 		</div>
-	
-		<div id="date">11/05/2022</div>
-		<div id="fact">UB Hacking Fall 2022 takes place</div>
-	
 	</div>
+	
 </body>
 
 </html>
