@@ -34,16 +34,15 @@ let mostRecentFact = null;
 async function factForDate(year){
     if(facts.length === 0) await loadFacts("events.csv");
     // Iterate over facts to find the most recent one that is before the given date
-    var mostRecentDate = year + 1; // set in future so everything is before itx
+    var mostRecentDate = new Date().getFullYear() + 1; // set in future so everything is before it
     for (let event of facts) {
-        if (event.date < mostRecentDate && event.date > year) {
+        if (+event.date < mostRecentDate && +event.date >= year) {
             mostRecentFact = event.fact;
-            mostRecentDate = event.date;
+            mostRecentDate = +event.date;
         }
     }
     return mostRecentFact;
 }
-
 /**
  * Date to display
  * 
@@ -133,6 +132,8 @@ function loop(start, end) {
     factForDate(resultDate).then((factText) => {
         fact.innerText = factText;
     });
+
+    if(percent === 1) clearInterval(timeline.loop);
 }
 /**
  * Returns a String based date for reading
@@ -157,6 +158,7 @@ function dateToString(date){
     ]
     let years = date.getFullYear();
     let months = date.getMonth();
+    
     let days = date.getDate();
-    return `${monthNames[months]} ${days-1}, ${years}`;
+    return `${monthNames[months]} ${days}, ${years}`;
 }
