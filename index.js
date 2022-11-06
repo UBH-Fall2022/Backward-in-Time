@@ -18,7 +18,7 @@ function percToDate(percent, time){
     return func1
 }
 
-let facts;
+let facts = [];
 
 async function loadFacts(filePath) {
     let file = ""
@@ -47,7 +47,7 @@ async function factForDate(year){
 
     // Iterate over facts to find the most recent one that is before the given date
     let mostRecentFact = null;
-    let mostRecentDate = 100000;
+    let mostRecentDate = year + 1; // set in future so everything is before it
     for (let event of facts) {
         let eventDate = getDate(Date.parse(event.date));
         if (eventDate < mostRecentDate && eventDate > year) {
@@ -55,10 +55,9 @@ async function factForDate(year){
             mostRecentDate = eventDate;
         }
     }
-    return mostRecentFact;
 
+    return mostRecentFact;
 }
-console.log(factForDate(2022.123));
 
 /**
  * Date to display
@@ -140,7 +139,7 @@ function loop(start, end) {
     let prog = document.getElementById("progress");
     prog.innerText = `${percent.toFixed(5)*100}% completed`;
 
-    let bar = document.getElementById("progress-bar");
+    let bar = document.getElementById("progress-bar-inner");
     bar.style.width = `${percent*100}%`;
 
     let date = document.getElementById("date");
