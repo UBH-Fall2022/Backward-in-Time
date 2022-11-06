@@ -1,31 +1,23 @@
-
-function submit(){
-    var time = document.getElementById("start-time").value;
-    var date = new Date(Date.parse(time));
-    var historicDate = percToDate(percent, date);
-}
 function getDate(date) {
-    var year = date.getFullYear();
-    var month = date.getMonth();
-    var day = date.getDate() ;
-    var hour = date.getHours()-24;
-    var minute = date.getMinutes();
-    var decimal = year + (month / 12) + (day / 365) + (hour / 8760) + (minute / 525600);
-    return decimal;
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    return year + (month/12) + (day/365) + (hour/(365*24)) + (minute/(365*24*60));
 }
 function percToDate(percent, time){
     var func1 = time - (Math.exp(20.3444*Math.pow(percent, 3)+3)-Math.exp(3));
     return func1
 }
 
-let facts = [];
+var facts = [];
 
 async function loadFacts(filePath) {
     let file = ""
     await fetch(filePath)
         .then((response) => response.text())
         .then((text) => file = text);
-
     let lines = file.split("\n");
     for (let line of lines) {
         // Remove quotes
@@ -38,24 +30,17 @@ async function loadFacts(filePath) {
         facts.push({date: columns[0], fact: fact});
     }
 }
-
+let mostRecentFact = null;
 async function factForDate(year){
-    if (!facts) {
-        // If no facts, load from file
-        await loadFacts("./events.csv");
-    }
-
+    if(facts.length === 0) await loadFacts("events.csv");
     // Iterate over facts to find the most recent one that is before the given date
-    let mostRecentFact = null;
-    let mostRecentDate = year + 1; // set in future so everything is before it
+    var mostRecentDate = year + 1; // set in future so everything is before itx
     for (let event of facts) {
-        let eventDate = getDate(Date.parse(event.date));
-        if (eventDate < mostRecentDate && eventDate > year) {
+        if (event.date < mostRecentDate && event.date > year) {
             mostRecentFact = event.fact;
-            mostRecentDate = eventDate;
+            mostRecentDate = event.date;
         }
     }
-
     return mostRecentFact;
 }
 
@@ -67,13 +52,12 @@ async function factForDate(year){
  */
 function fullDate(year){
     let currentYear = new Date().getFullYear();
-    let yearInMs = 31536000000;
-
+    let yearInMs =  365.25*24*60*60*1000;
     if (year > 1990) {
         // Present - 1990
         // @todo - how accurate is this?
-        let date = Date(currentYear - year * yearInMs)
-        return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+        let date = new Date((year-1970) * yearInMs);
+        return dateToString(date);
     }
     else if (year > 1000)
         // 1990 - 1000
@@ -101,12 +85,12 @@ function fullDate(year){
 /**
  * Calculate the percentage given start and end dates
  * 
- * @param {string} start The start date/time as a an ISO string (i.e. '2022-11-05T14:42')
+ * @param {string} start The start date/time as a an ISO string (i.e. '2022-11-05T14:42') 
  * @param {string} end   The end date/time as a an ISO string (i.e. '2022-11-05T14:42')
  * @param {string} [now = [current time]] The current date/time as a an ISO string (i.e. '2022-11-05T14:42')
  * @returns The percentage of the way through the time period as a decimal (i.e. 0.5)
  */
-function calcPercent(start, end, now = new Date().toISOString()) {
+function calcPercent(start, end, now = new Date().f()) {
     let startMs = Date.parse(start);
     let endMs = Date.parse(end);
     let nowMs = Date.parse(now);
@@ -114,7 +98,7 @@ function calcPercent(start, end, now = new Date().toISOString()) {
     if (nowMs < startMs) return 0;
     if (nowMs > endMs) return 1;
 
-    return (nowMs - startMs) / (endMs - startMs);
+    return ((nowMs - startMs) / (endMs - startMs));
 }
 
 /**
@@ -122,31 +106,57 @@ function calcPercent(start, end, now = new Date().toISOString()) {
  */
 function submit() {
     let start = document.getElementById("start-time").value;
+    if(start === "") start = new Date().toISOString();
+    document.getElementById("start-time").value = start;
     let end = document.getElementById("end-time").value;
-    
     let timeline = document.getElementById("timeline");
     timeline.style.display = "block";
     
     if (timeline.loop) clearInterval(timeline.loop);
     timeline.loop = setInterval(() => loop(start, end), 100);
+    
 }
 
 function loop(start, end) {
     let now = new Date().toISOString();
     let percent = calcPercent(start, end, now);
     let resultDate = percToDate(percent, getDate(new Date(start)));
-
     let prog = document.getElementById("progress");
-    prog.innerText = `${percent.toFixed(5)*100}% completed`;
+    //percent = percent.toFixed(4);
 
+    prog.innerText = `${(percent*100).toFixed(4)}% completed`;
     let bar = document.getElementById("progress-bar-inner");
     bar.style.width = `${percent*100}%`;
-
     let date = document.getElementById("date");
     date.innerText = fullDate(resultDate);
-
     let fact = document.getElementById("fact");
     factForDate(resultDate).then((factText) => {
         fact.innerText = factText;
     });
+}
+/**
+ * Returns a String based date for reading
+ * 
+ * @param {string} date   Date object')
+ * @returns Returns the date as a string in the format MONTH DAY, YEAR
+ */
+function dateToString(date){
+    let monthNames = [
+        "January",
+        "February", 
+        "March",
+        "April", 
+        "May", 
+        "June", 
+        "July",
+        "August", 
+        "September", 
+        "October",
+        "November", 
+        "December"
+    ]
+    let years = date.getFullYear();
+    let months = date.getMonth();
+    let days = date.getDate();
+    return `${monthNames[months]} ${days-1}, ${years}`;
 }

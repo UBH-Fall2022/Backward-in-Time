@@ -4,22 +4,27 @@
 <head>
 	<title>Backward in Time</title>
 	<script src="index.js"></script>
-	<link rel="stylesheet" type="text/css" href="index.css">
+	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
 <body>
-	<h1>Backward in Time</h1>
+	<h1 id="title">Backward in Time</h1>
 	<div id="inputs">
-		<input type="datetime-local" id="start-time" placeholder="Start time"/>
-		<input type="datetime-local" id="end-time" placeholder="End time"/>
+		<div id="start">
+			<label for="start-date">Start Date</label>
+			<input type="datetime-local" id="start-time" placeholder="Start time"/>
+		</div>
+		<div id="end">
+			<label for="end-date">End Date</label>
+			<input type="datetime-local" id="end-time" placeholder="End time"/>
+		</div>
 		
-		<button id="submit" onclick="submit()">Submit</button>
+		<button id="submit" onclick="submit()">Start</button>
 	</div>
-	<br><br>
-	<div id="timeline" style="display: none;">
-		<div id="progress">10% completed</div>
+	<div id="timeline">
+		<div id="progress">0% completed</div>
 
-		<div id="progress-bar" style="background-color:gray; height: 5em; width: 90vw;">
+		<div id="progress-bar" style="background-color:gray; height: 2em; width: 15vw;border-radius: 3px;margin: auto; display: block;">
 			<div id="progress-bar-inner" style="background-color:greenyellow; height: 100%; width: 10%;"></div>
 		</div>
 	
