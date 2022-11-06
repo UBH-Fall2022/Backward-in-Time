@@ -18,22 +18,47 @@ function percToDate(percent, time){
     return func1
 }
 
-function factForDate(year){
-    var csv = data.FileReader("events.csv")
-    var lowestyear = 0
-    var difference = 99999999999
-    for (var i of csv){
-        if (Math.abs(i[0] - year) < difference){
-            lowestyear = i[0]
-            difference = Math.abs(i[0] - year)
-        }
-    }
-    for(var i of csv){
-        if (lowestyear == i[0]){
-            return i[1]
-        }
+let facts;
+
+async function loadFacts(filePath) {
+    let file = ""
+    await fetch(filePath)
+        .then((response) => response.text())
+        .then((text) => file = text);
+
+    let lines = file.split("\n");
+    for (let line of lines) {
+        // Remove quotes
+        line = line.replace(/"/g, "");
+        // Split into columns along all commas
+        let columns = line.split(",");
+        // Reassemble the fact (date is known to not have commas)
+        let fact = columns.slice(1).join(",");
+        // Add to array
+        facts.push({date: columns[0], fact: fact});
     }
 }
+
+async function factForDate(year){
+    if (!facts) {
+        // If no facts, load from file
+        await loadFacts("./events.csv");
+    }
+
+    // Iterate over facts to find the most recent one that is before the given date
+    let mostRecentFact = null;
+    let mostRecentDate = 100000;
+    for (let event of facts) {
+        let eventDate = getDate(Date.parse(event.date));
+        if (eventDate < mostRecentDate && eventDate > year) {
+            mostRecentFact = event.fact;
+            mostRecentDate = eventDate;
+        }
+    }
+    return mostRecentFact;
+
+}
+console.log(factForDate(2022.123));
 
 /**
  * Date to display
@@ -122,6 +147,7 @@ function loop(start, end) {
     date.innerText = fullDate(resultDate);
 
     let fact = document.getElementById("fact");
-    fact.innerText = factForDate(resultDate);
-
+    factForDate(resultDate).then((factText) => {
+        fact.innerText = factText;
+    });
 }
